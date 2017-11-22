@@ -31,6 +31,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
   @Override
   public int size() {
     // TODO add the sizes of all the chains
+    int result = 0;
     for(int i = 0; i < DEFAULT_TABLE_SIZE; i++){
       result += table.get(i).size();
     }
@@ -48,8 +49,8 @@ public class MyHashMap<K, V> implements Map<K, V> {
     final int index = calculateIndex(key);
     final Iterator<Entry<K, V>> iter = table.get(index).iterator();
       while(iter.hasNext()){
-        Entry<K, V> newEntry = iter.next();
-        if(newEntry.getKey().equals(key)){
+        final Entry <K, V> Entry = iter.next();
+        if(newEntry.getKey().equals(value)){
           return true;
         }
       }
@@ -60,14 +61,15 @@ public class MyHashMap<K, V> implements Map<K, V> {
   @Override
   public boolean containsValue(final Object value) {
     // TODO follow basic approach of remove below (though this will be much simpler)
-     final int index = calculateIndex(value);
-    final Iterator<Entry<K, V>> iter = table.get(index).iterator();
-      while(iter.hasNext()){
-        Entry<K, V> newEntry = iter.next();
-        if(newEntry.getValue().equals(value)){
+    for (int i = 0; i < table.size(); i += 1) {
+      final Iterator<Entry<K, V>> iter = table.get(i).iterator();
+      while (iter.hasNext()) {
+        final Entry<K, V> entry = iter.next();
+        if (entry.getValue().equals(value)) {
           return true;
         }
       }
+    }
 
     return false;
   }
@@ -93,7 +95,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
     final int index = calculateIndex(key
     for (Entry<K, V> entry : table.get(index)) {
       if (entry.getKey().equals(key)) {
-        V oldValue = entry.getValue();
+        final V oldValue = entry.getValue();
         entry.setValue(value);
         return oldValue;
       }
