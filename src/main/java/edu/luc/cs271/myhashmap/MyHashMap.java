@@ -76,7 +76,13 @@ public class MyHashMap<K, V> implements Map<K, V> {
   public V get(final Object key) {
     // TODO follow basic approach of remove below (though this will be simpler)
     final int index = calculateIndex(key);
-
+    final Iterator<Entry<K, V>> iter = table.get(index).iterator();
+    while (iter.hasNext()) {
+      final Entry<K, V> entry = iter.next();
+      if (entry.getKey().equals(key)) {
+        return entry.getValue();
+      }
+    }
 
     return null;
   }
@@ -84,9 +90,16 @@ public class MyHashMap<K, V> implements Map<K, V> {
   @Override
   public V put(final K key, final V value) {
     // TODO follow basic approach of remove below (this will be similar)
-    final int index = calculateIndex(key);
-
-
+    final int index = calculateIndex(key
+    for (Entry<K, V> entry : table.get(index)) {
+      if (entry.getKey().equals(key)) {
+        V oldValue = entry.getValue();
+        entry.setValue(value);
+        return oldValue;
+      }
+    }
+    
+    table.get(index).add(0, new AbstractMap.SimpleEntry<K, V>(key, value));
     return null;
   }
 
@@ -108,6 +121,10 @@ public class MyHashMap<K, V> implements Map<K, V> {
   @Override
   public void putAll(final Map<? extends K, ? extends V> m) {
     // TODO add each entry in m's entrySet
+    for (Map.Entry<? extends K, ? extends V> entry : m.entrySet()) {
+      this.put(entry.getKey(), entry.getValue());
+    }
+  }
 
 
   }
@@ -115,6 +132,10 @@ public class MyHashMap<K, V> implements Map<K, V> {
   @Override
   public void clear() {
     // TODO clear each chain
+    for (int i = 0; i < DEFAULT_TABLE_SIZE; i++) {
+      table.set(i, new LinkedList<>());
+    }
+  }
 
 
   }
@@ -124,8 +145,14 @@ public class MyHashMap<K, V> implements Map<K, V> {
   public Set<K> keySet() {
     final Set<K> result = new HashSet<>();
     // TODO populate the set
-
-
+    for (int i = 0; i < DEFAULT_TABLE_SIZE; i++) {
+      final Iterator<Entry<K, V>> iter = table.get(i).iterator();
+      while (iter.hasNext()) {
+        Entry<K, V> tempKey = iter.next();
+        result.add(tempKey.getKey());
+      }
+    }
+    
     return Collections.unmodifiableSet(result);
   }
 
