@@ -15,6 +15,7 @@ public class Main {
       final Integer count = counts.get(word);
       counts.put(word, count == null ? 1 : count + 1);
     }
+    
     final ArrayList<Map.Entry<String, Integer>> arr = new ArrayList<>(counts.size());
     arr.addAll(counts.entrySet());
     System.out.println(
