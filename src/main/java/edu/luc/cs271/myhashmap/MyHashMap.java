@@ -161,8 +161,14 @@ public class MyHashMap<K, V> implements Map<K, V> {
   public Collection<V> values() {
     final List<V> result = new LinkedList<>();
     // TODO populate the list
-
-
+    for (int i = 0; i < DEFAULT_TABLE_SIZE; i++) {
+      final Iterator<Entry<K, V>> iter = table.get(i).iterator();
+      while (iter.hasNext()) {
+        Entry<K, V> tempVal = iter.next();
+        result.add(tempVal.getValue());
+      }
+    }
+    
     return Collections.unmodifiableCollection(result);
   }
 
@@ -171,7 +177,13 @@ public class MyHashMap<K, V> implements Map<K, V> {
   public Set<Entry<K, V>> entrySet() {
     final Set<Entry<K, V>> result = new HashSet<>();
     // TODO populate the set
-
+     for (int i = 0; i < DEFAULT_TABLE_SIZE; i++) {
+      final Iterator<Entry<K, V>> iter = table.get(i).iterator();
+      while (iter.hasNext()) {
+        Entry<K, V> tempVal = iter.next();
+        result.add(tempVal);
+      }
+    }
 
     return Collections.unmodifiableSet(result);
   }
@@ -179,6 +191,14 @@ public class MyHashMap<K, V> implements Map<K, V> {
   @Override
   public String toString() {
     // TODO return the string representation of the underlying table
+     for (int i = 0; i < DEFAULT_TABLE_SIZE; i++) {
+      final Iterator<Entry<K, V>> iter = table.get(i).iterator();
+      while (iter.hasNext()) {
+        Entry<K, V> tempVal = iter.next();
+        System.out.println(tempVal.getKey() + " " + tempVal.getValue());
+      }
+    }
+    
     return "";
   }
 
@@ -189,7 +209,8 @@ public class MyHashMap<K, V> implements Map<K, V> {
       return false;
     } else {
       // TODO simply compare the entry sets
-      return false;
+      return ((Map) that).entrySet().equals(this.entrySet());
+      
     }
   }
 
